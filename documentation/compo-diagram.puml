@@ -1,0 +1,19 @@
+@startuml
+title Weather Data API - Component Diagram
+
+[Client Application] as client
+[GraphQL API] as api
+[Weather Service] as service
+[Weather.gov API] as weather_gov
+
+client --> api : GraphQL queries
+api --> service : requests
+service --> weather_gov : REST calls
+
+note right of service
+  - Fetches weather data
+  - Transforms responses
+  - Handles caching
+end note
+
+@enduml
