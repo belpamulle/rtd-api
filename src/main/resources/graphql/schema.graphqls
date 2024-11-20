@@ -1,0 +1,173 @@
+"""
+Temperature information with unit
+"""
+type Temperature {
+    """
+    The numerical value of the temperature
+    """
+    value: Float!
+    
+    """
+    The unit of measurement (FAHRENHEIT, CELSIUS, KELVIN)
+    """
+    unit: String!
+    
+    """
+    Formatted temperature string including unit symbol
+    """
+    formattedTemperature: String!
+}
+
+"""
+Wind information including speed and direction
+"""
+type Wind {
+    """
+    Wind speed value
+    """
+    speed: Float!
+    
+    """
+    Wind direction in degrees (0-360)
+    """
+    directionDegrees: Int!
+    
+    """
+    Wind gust speed, if available
+    """
+    gustSpeed: Float
+    
+    """
+    Unit of measurement for wind speed
+    """
+    speedUnit: String!
+    
+    """
+    Cardinal direction (N, NE, E, etc.)
+    """
+    cardinalDirection: String!
+}
+
+"""
+Geographic coordinates
+"""
+type Coordinates {
+    """
+    Latitude in decimal degrees (-90 to 90)
+    """
+    latitude: Float!
+    
+    """
+    Longitude in decimal degrees (-180 to 180)
+    """
+    longitude: Float!
+}
+
+"""
+Current weather conditions
+"""
+type CurrentWeather {
+    observationTime: String!
+    temperature: Temperature!
+    wind: Wind!
+    description: String!
+    relativeHumidity: Int!
+    precipitationLastHour: Float
+    cloudCoverPercentage: Int!
+    coordinates: Coordinates!
+    stationId: String!
+    visibility: String
+    barometricPressure: Float!
+    pressureUnit: String!
+}
+
+"""
+Weather alert information
+"""
+type WeatherAlert {
+    id: ID!
+    alertType: String!
+    headline: String!
+    description: String!
+    severity: AlertSeverity!
+    startTime: String!
+    endTime: String!
+    area: String
+    active: Boolean!
+}
+
+"""
+Severity level of weather alerts
+"""
+enum AlertSeverity {
+    EXTREME
+    SEVERE
+    MODERATE
+    MINOR
+    UNKNOWN
+}
+
+"""
+Single forecast period (hourly or daily)
+"""
+type ForecastPeriod {
+    startTime: String!
+    endTime: String!
+    description: String!
+    temperature: Temperature!
+    wind: Wind!
+    precipitationProbability: Int!
+    relativeHumidity: Int!
+    precipitationAmount: Float
+    precipitationUnit: String
+    cloudCoverPercentage: Int!
+    isDaytime: Boolean!
+    durationHours: Int!
+}
+
+"""
+Weather forecast containing multiple periods
+"""
+type WeatherForecast {
+    type: ForecastType!
+    generatedTime: String!
+    coordinates: Coordinates!
+    periods: [ForecastPeriod!]!
+    nextUpdate: String!
+    totalForecastHours: Int!
+    numberOfPeriods: Int!
+    needsUpdate: Boolean!
+}
+
+"""
+Type of forecast (hourly or daily)
+"""
+enum ForecastType {
+    HOURLY
+    DAILY
+}
+
+"""
+Input type for coordinate-based queries
+"""
+input CoordinatesInput {
+    latitude: Float!
+    longitude: Float!
+}
+
+type Query {
+    """
+    Get current weather conditions for specified coordinates
+    """
+    currentWeather(coordinates: CoordinatesInput!): CurrentWeather!
+    
+    """
+    Get weather forecast for specified coordinates
+    """
+    forecast(coordinates: CoordinatesInput!, type: ForecastType!): WeatherForecast!
+    
+    """
+    Get active weather alerts for specified coordinates
+    """
+    activeAlerts(coordinates: CoordinatesInput!): [WeatherAlert!]!
+}
