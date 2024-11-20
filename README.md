@@ -10,7 +10,7 @@ This service acts as a middleware that fetches data from the National Weather Se
 
 The system follows a simple, straightforward design:
 
-![Component Diagram](documentation/compo-diagram.png)
+![Component Diagram](documentation/compo-diagram-weather-data-api.png)
 
 View the source PlantUML diagram: [compo-diagram.puml](documentation/compo-diagram.puml)
 
